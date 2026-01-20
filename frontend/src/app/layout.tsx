@@ -4,6 +4,7 @@ import { Header } from '../app/components/Header';
 import { Footer } from '../app/components/Footer';
 import { CartProvider } from './context/CartContext';  
 import { CartSidebar } from "./components/Cart/CartSidebar";
+import { AuthProvider } from './context/AuthContext'
 import "./globals.css";
 
 
@@ -27,14 +28,16 @@ export default function Layout({ children}: {children: React.ReactNode}) {
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`} >
-        <CartProvider>
-          <div className="app min-h-screen flex flex-col">
-            <Header />
-            <main>{children}</main>
-            <Footer />
-            <CartSidebar />
-          </div>
-        </CartProvider>
+        <AuthProvider>
+          <CartProvider>
+            <div className="app min-h-screen flex flex-col">
+              <Header />
+              <main>{children}</main>
+              <Footer />
+              <CartSidebar />
+            </div>
+          </CartProvider>
+        </AuthProvider>  
       </body>
     </html>
   );

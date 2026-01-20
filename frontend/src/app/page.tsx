@@ -26,7 +26,7 @@ export default function Home() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await fetch('/api/users'); // Adjust path if different
+        const res = await fetch('/api/test/users'); // Adjust path if different
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         const data = await res.json();
         console.log('Fetched users:', data); // Log to console
