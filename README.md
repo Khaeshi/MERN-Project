@@ -8,11 +8,6 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 ![Node](https://img.shields.io/badge/node-v20.x-green.svg)
 ![MongoDB](https://img.shields.io/badge/mongodb-v7.x-green.svg)
 
-## 📸 Screenshots
-
-![Homepage](./docs/screenshots/homepage.png)
-![Menu](./docs/screenshots/menu.png)
-![Admin Dashboard](./docs/screenshots/admin.png)
 
 ## 🌟 Features
 
@@ -23,7 +18,6 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 - ⭐ **Reviews & Ratings** - Customer feedback system
 - 📱 **Responsive Design** - Mobile-friendly interface
 - 🔍 **Search & Filter** - Find items by category, price, etc.
-- 📊 **Admin Dashboard** - Order management and analytics
 
 ## 🚀 Quick Start
 
@@ -54,25 +48,24 @@ npm install
 
 3. Set up environment variables
 ```bash
-# Copy example env files
+# Populate .env.example for database
 cp backend/.env.example backend/.env
-cp frontend/.env.example frontend/.env
 ```
 
 4. Start development servers
 ```bash
 # Terminal 1 - Backend (http://localhost:5000)
 cd backend
-npm run dev
+npm run start
 
-# Terminal 2 - Frontend (http://localhost:5173)
+# Terminal 2 - Frontend (http://localhost:3000)
 cd frontend
 npm run dev
 ```
 
 5. Open your browser
 ```
-Visit: http://localhost:5173
+Visit: http://localhost:3000
 ```
 
 ## 📚 Documentation
@@ -82,7 +75,8 @@ Visit: http://localhost:5173
 - [Database Schema](./docs/DATABASE.md)
 - [Deployment Guide](./docs/DEPLOYMENT.md)
 - [Contributing Guidelines](./CONTRIBUTING.md)
-- [Code Style Guide](./docs/CODE_STYLE.md)
+- [Code Style  with Agents Guide](./docs/AGENTS_USAGE.md)
+- [Rules for AI Agents](./docs/AGENTS.MD)
 
 ## 🛠️ Tech Stack
 
@@ -101,13 +95,12 @@ Visit: http://localhost:5173
 ### DevOps
 - **Docker** - Containerization
 - **GitHub Actions** - CI/CD
-- **Vercel** - Frontend hosting
-- **Railway** - Backend hosting
+- **Render** - Full-stack hosting service
 - **MongoDB Atlas** - Database hosting
 
 ## 📁 Project Structure
 ```
-cafe-mern/
+MERN-Project/
 ├── backend/                     # Express backend
 │   ├── controllers/             # Route controllers
 │   ├── models/                  # Mongoose models
@@ -119,19 +112,24 @@ cafe-mern/
 ├── docs/                        # Documentation
 │    ├── API.md
 │    ├── DATABASE.md
+│    ├── DEPLOYMENT.md
+│    ├── AGENTS_USAGE.md
+│    ├── AGENTS.md
+│    └── SETUP.md
 │    
 ├── frontend/                    # React frontend
-    ├── .next                    # dist
-    ├── node_modules
-    ├── public                   
-    ├── src/
-    │   ├── app/         
-    │       ├── components/      # React components
-    │       ├── favicon.ico      # Favico
-    │       ├── Layout.tsx       # HTML for SSG
-    │       ├── page.tsx         # Landing Page
-    │       └── globals.css      # Global styles
-
+│   ├── .next                    # dist
+│   ├── node_modules
+│   ├── public                   
+│   ├── src/
+│   │   ├── app/         
+│   │       ├── components/      # React components
+│   │       ├── favicon.ico      # Favico
+│   │       ├── Layout.tsx       # HTML for SSG
+│   │       ├── page.tsx         # Landing Page
+│   │       └── globals.css      # Global styles
+├── .gitignore
+└── README.md
 
 ```
 
@@ -142,15 +140,10 @@ cafe-mern/
 | Khaesey Angel G. Tablante | Project Lead Developer & Backend | [@Khaeshi](https://github.com/Khaeshi) | kagtabss@gmail.com |
 --> insert
 
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
 ## 🙏 Acknowledgments
 
-- [Unsplash](https://unsplash.com) - Stock images
+- [Unsplash](https://unsplash.com) - Stock images *temporary*
 - [Heroicons](https://heroicons.com) - Icon library
-- Our amazing professor and classmates
 
 ## 📧 Contact
 
