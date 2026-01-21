@@ -1,31 +1,75 @@
+// server.js
 import express from 'express';
 import cors from 'cors';
-import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import connectDB from './config/database.js'
-import authRoutes from './routes/auth.js'
-import users from './models/users.js'
+import mongoose from 'mongoose';
+import connectDB from './config/database.js';
+import authRoutes from './routes/auth.js';
 
+// Load environment variables
 dotenv.config();
 
+// Initialize express
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Connect to MongoDB
 connectDB();
 
+// Middleware
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-mongoose.connect(process.env.MONGO_URI,{dbName: "mern_db"})
-    .then(() => console.log('MongoDB Connected'))
-    .catch(err => console.error(err));
+// Request logger
+app.use((req, res, next) => {
+  console.log(`📨 ${req.method} ${req.path}`);
+  next();
+});
 
 // API Routes
 app.use('/api/auth', authRoutes);
-// app.use('/api/cofee', coffeeRoutes);
 
+// Root route
 app.get('/', (req, res) => {
-  res.json({ status: 'ok', message: 'Server is ready' })
-})
+  const dbStatus = mongoose.connection.readyState === 1 ? 'Connected ✅' : 'Disconnected ❌';
+  
+  res.json({ 
+    success: true,
+    message: 'Music School API',
+    database: dbStatus,
+    endpoints: {
+      register: 'POST /api/auth/register',
+      login: 'POST /api/auth/login',
+      users: 'GET /api/auth/users'
+    }
+  });
+});
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: 'Route not found',
+    path: req.path
+  });
+});
+
+// Error handler
+app.use((err, req, res, next) => {
+  console.error('❌ Error:', err);
+  
+  res.status(err.status || 500).json({
+    success: false,
+    message: err.message || 'Server Error',
+    ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
+  });
+});
+
+// Start server
+app.listen(PORT, () => {
+  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
+  console.log(`📝 Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+});
