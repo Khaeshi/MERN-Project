@@ -3,7 +3,7 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
 
 interface CartItem {
-  id: number;
+  id: string | number;
   name: string;
   price: number;
   image: string;
@@ -13,10 +13,14 @@ interface CartItem {
 interface CartContextType {
   cart: CartItem[];
   isCartOpen: boolean;
+  isModalOpen: boolean; 
   addToCart: (item: Omit<CartItem, 'quantity'>) => void;
   updateQuantity: (id: number, delta: number) => void;
-  toggleCart: () => void;  // Ensure this is included
+  toggleCart: () => void;
+  toggleModal: () => void;  
   getTotalPrice: () => number;
+  getTotalItems: () => number;
+  clearCart: () => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -24,6 +28,7 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export function CartProvider({ children }: { children: ReactNode }) {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false); 
 
   const addToCart = (item: Omit<CartItem, 'quantity'>) => {
     setCart((prevCart) => {
@@ -37,7 +42,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
       }
       return [...prevCart, { ...item, quantity: 1 }];
     });
-    setIsCartOpen(true);
   };
 
   const updateQuantity = (id: number, delta: number) => {
@@ -52,14 +56,21 @@ export function CartProvider({ children }: { children: ReactNode }) {
     });
   };
 
-  const toggleCart = () => setIsCartOpen((prev) => !prev);  // Ensure this function exists
+  const toggleCart = () => setIsCartOpen((prev) => !prev);
+  const toggleModal = () => setIsModalOpen((prev) => !prev);  
 
   const getTotalPrice = () => {
     return cart.reduce((total, item) => total + item.price * item.quantity, 0);
   };
 
+  const getTotalItems = () => {
+    return cart.reduce((total, item) => total + item.quantity, 0);
+  };
+
+  const clearCart = () => setCart([]);
+
   return (
-    <CartContext.Provider value={{ cart, isCartOpen, addToCart, updateQuantity, toggleCart, getTotalPrice }}> 
+    <CartContext.Provider value={{ cart, isCartOpen, isModalOpen, addToCart, updateQuantity, toggleCart, toggleModal, getTotalPrice, getTotalItems, clearCart }}>
       {children}
     </CartContext.Provider>
   );

@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import connectDB from './config/database.js';
 import authRoutes from './routes/auth.js';
+import menuRoutes from './routes/menu.js';
 
 // Load environment variables
 dotenv.config();
@@ -29,6 +30,7 @@ app.use((req, res, next) => {
 
 // API Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/menu', menuRoutes);
 
 // Root route
 app.get('/', (req, res) => {
@@ -36,7 +38,7 @@ app.get('/', (req, res) => {
   
   res.json({ 
     success: true,
-    message: 'Music School API',
+    message: 'Cafe API',
     database: dbStatus,
     endpoints: {
       register: 'POST /api/auth/register',

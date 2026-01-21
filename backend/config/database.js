@@ -3,9 +3,6 @@ import mongoose from 'mongoose';
 
 const connectDB = async () => {
   try {
-    console.log('🔄 Attempting to connect to MongoDB...');
-    console.log('📍 URI:', process.env.MONGO_URI?.replace(/\/\/([^:]+):([^@]+)@/, '//$1:****@')); // Hide password
-
     const conn = await mongoose.connect(process.env.MONGO_URI);
 
     console.log('✅ MongoDB Connected Successfully!');

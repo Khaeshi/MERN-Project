@@ -3,19 +3,19 @@ import Image from 'next/image'
 
 export function Footer() {
   return (
-    <footer className="bg-black text-white py-12 px-6">
+    <footer className="bg-black text-white py-12">  
       <div className="max-w-7xl mx-auto">
         {/* Three Column Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8 px-16">
           {/* Left - Brand Logo */}
           <div className="flex items-center justify-center md:justify-start">
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 flex items-center justify-center">
                 <Image
-                  src="/favicon.ico"  // Path to favicon in public folder
+                  src="/favicon.ico" 
                   alt="Cafe Prince Logo"
-                  width={60}  // Adjust size as needed
-                  height={60}
+                  width={50}  
+                  height={50}
                   className="w-full h-full object-contain"  // Ensures it fits
                 />
               </div>

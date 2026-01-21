@@ -3,24 +3,33 @@
 import { X } from 'lucide-react';
 import Image from 'next/image';
 import { useCart } from '../../context/CartContext';
+import { Button } from '../../components/ui/button';  
 
 export function CartSidebar() {
-  const { cart, isCartOpen, updateQuantity, toggleCart, getTotalPrice } = useCart();
+  const { cart, isCartOpen, updateQuantity, toggleCart, toggleModal, getTotalPrice } = useCart();
 
   return (
     <>
-      {/* Shopping Cart Sidebar */}
+      {/* Overlay (Backdrop) - Always rendered for smooth fade-in/out */}
       <div
-        className={`fixed top-0 right-0 w-full md:w-[500px] bg-black h-screen transition-transform duration-500 z-50 ${
+        className={`fixed inset-0 bg-black z-40 transition-opacity duration-500 ease-in-out ${
+          isCartOpen ? 'opacity-50 visible' : 'opacity-0 invisible'
+        }`}
+        onClick={toggleCart}
+      />
+
+      {/* Shopping Cart Modal (Floating) */}
+      <div
+        className={`fixed top-1/2 right-4 transform -translate-y-1/2 w-full md:w-[400px] h-[80vh] bg-black rounded-lg shadow-2xl transition-transform duration-500 ease-in-out z-50 ${
           isCartOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
-        <div className="h-20 flex items-center px-5 border-b border-gray-800">
+        <div className="h-20 flex items-center px-5 border-b border-gray-800 rounded-t-lg">
           <h2 className="text-[#E8BC0E] text-2xl font-light">Cart</h2>
         </div>
 
         {/* Cart Items List */}
-        <div className="overflow-y-auto h-[calc(100vh-150px)] px-5 py-4">
+        <div className="overflow-y-auto h-[calc(80vh-200px)] px-5 py-4">  
           {cart.length === 0 ? (
             <p className="text-white text-center mt-8">Your cart is empty</p>
           ) : (
@@ -34,14 +43,14 @@ export function CartSidebar() {
                   </div>
                   <div className="flex items-center gap-2">
                     <button
-                      onClick={() => updateQuantity(item.id, -1)}
+                      onClick={() => updateQuantity(item.id as number, -1)}
                       className="bg-white/30 text-white w-8 h-8 rounded hover:bg-white/40"
                     >
                       -
                     </button>
                     <span className="w-8 text-center">{item.quantity}</span>
                     <button
-                      onClick={() => updateQuantity(item.id, 1)}
+                      onClick={() => updateQuantity(item.id as number, 1)}
                       className="bg-white/30 text-white w-8 h-8 rounded hover:bg-white/40"
                     >
                       +
@@ -54,8 +63,24 @@ export function CartSidebar() {
           )}
         </div>
 
+        {/* Buy Button */}
+        {cart.length > 0 && (
+          <div className="absolute bottom-[70px] w-full px-5 py-4 border-t border-gray-800">
+            <Button
+              onClick={() => {
+                toggleModal();
+                toggleCart();  
+              }}
+              className="w-full bg-[#E8BC0E] text-black font-bold hover:bg-[#d4a60d]"
+              size="lg"
+            >
+              Buy
+            </Button>
+          </div>
+        )}
+
         {/* Checkout Section */}
-        <div className="absolute bottom-0 w-full grid grid-cols-2">
+        <div className="absolute bottom-0 w-full grid grid-cols-2 rounded-b-lg overflow-hidden">
           <div className="bg-[#E8BC0E] h-[70px] flex justify-center items-center font-bold text-black">
             ₱{getTotalPrice()}
           </div>
@@ -68,14 +93,6 @@ export function CartSidebar() {
           </div>
         </div>
       </div>
-
-      {/* Overlay */}
-      {isCartOpen && (
-        <div
-          className="fixed inset-0 bg-black/50 z-40"
-          onClick={toggleCart}
-        />
-      )}
     </>
   );
 }

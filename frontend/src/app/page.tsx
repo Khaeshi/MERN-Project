@@ -1,7 +1,10 @@
-'use client'
-
+import type { Metadata } from "next";
 import Image from 'next/image'
-import { useEffect, useState } from 'react';
+
+export const metadata: Metadata = {
+  title: "Cafe Prince | Home",
+  description: "A cafe ordering website.",
+};
 
 const heroImage = 'https://images.unsplash.com/photo-1616547092703-79f311f472ae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb2ZmZWUlMjBzaG9wJTIwYmFyaXN0YXxlbnwxfHx8fDE3Njg3ODM3NTl8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral';
 
@@ -14,30 +17,8 @@ const productImages = [
   'https://images.unsplash.com/photo-1616547092703-79f311f472ae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb2ZmZWUlMjBzaG9wJTIwYmFyaXN0YXxlbnwxfHx8fDE3Njg3ODM3NTl8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
 ];
 
-interface User {
-  id: number;
-  name: string;
-  username: string;
-  email: string;
-  // Add other properties if needed
-}
 
 export default function Home() {
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const res = await fetch('/api/test/users'); // Adjust path if different
-        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-        const data = await res.json();
-        console.log('Fetched users:', data); // Log to console
-      } catch (err) {
-        console.error('Error fetching users:', err);
-      }
-    };
-
-    fetchUsers();
-  }, []); // Runs once on mount
-
   return (
     <>
       {/* Hero Section */}
