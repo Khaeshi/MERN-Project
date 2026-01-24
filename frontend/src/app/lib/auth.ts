@@ -1,5 +1,3 @@
-// lib/auth.ts - Authentication utilities for Next.js App Router
-
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 
 export interface User {
@@ -16,7 +14,7 @@ export async function login(email: string, password: string) {
     headers: {
       'Content-Type': 'application/json',
     },
-    credentials: 'include', // Important: Send cookies
+    credentials: 'include',
     body: JSON.stringify({ email, password }),
   });
 
@@ -36,7 +34,7 @@ export async function register(name: string, email: string, password: string) {
     headers: {
       'Content-Type': 'application/json',
     },
-    credentials: 'include', // Important: Send cookies
+    credentials: 'include', 
     body: JSON.stringify({ name, email, password }),
   });
 
@@ -53,7 +51,7 @@ export async function register(name: string, email: string, password: string) {
 export async function logout() {
   const res = await fetch(`${API_URL}/api/auth/logout`, {
     method: 'POST',
-    credentials: 'include', // Important: Send cookies
+    credentials: 'include', 
   });
 
   if (!res.ok) {
@@ -67,12 +65,11 @@ export async function logout() {
 export async function getMe(): Promise<User | null> {
   try {
     const res = await fetch(`${API_URL}/api/auth/me`, {
-      credentials: 'include', // Important: Send cookies
+      credentials: 'include', 
       cache: 'no-store',
     });
 
     if (!res.ok) {
-      // ✅ 401 is expected when user is not logged in - don't log as error
       if (res.status === 401) {
         return null;
       }
@@ -84,7 +81,6 @@ export async function getMe(): Promise<User | null> {
     const data = await res.json();
     return data.user;
   } catch (error) {
-    // ✅ Only log actual network/parse errors
     console.error('Get me error:', error);
     return null;
   }

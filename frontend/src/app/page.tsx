@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Image from 'next/image'
+import Image from 'next/image';
 
 export const metadata: Metadata = {
   title: "Cafe Prince | Home",
@@ -17,7 +17,6 @@ const productImages = [
   'https://images.unsplash.com/photo-1616547092703-79f311f472ae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb2ZmZWUlMjBzaG9wJTIwYmFyaXN0YXxlbnwxfHx8fDE3Njg3ODM3NTl8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
 ];
 
-
 export default function Home() {
   return (
     <>
@@ -31,26 +30,26 @@ export default function Home() {
             height={500}
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-black/40"></div>
+          <div className="absolute inset-0 bg-stone-900/60"></div> {/* Adjusted overlay for warmth */}
         </div>
         <div className="relative z-10 px-4">
           <h1 className="text-white text-4xl md:text-5xl lg:text-6xl font-bold mb-8 tracking-wide">
             DISCOVER THE<br />PERFECT BLEND
           </h1>
-          <button className="bg-[#8B6F47] hover:bg-[#75593a] text-white px-8 md:px-12 py-3 md:py-4 text-base md:text-lg transition-colors shadow-lg">
+          <button className="bg-amber-600 hover:bg-amber-700 text-white px-8 md:px-12 py-3 md:py-4 text-base md:text-lg transition-colors shadow-lg">
             Order Now
           </button>
         </div>
       </section>
 
       {/* Featured Products */}
-      <section id="menu" className="py-12 md:py-16 px-4 md:px-6 bg-gray-50">
-        <h2 className="text-center text-3xl md:text-4xl font-bold mb-8 md:mb-12 tracking-wide">
+      <section id="menu" className="py-12 md:py-16 px-4 md:px-6 bg-stone-900">
+        <h2 className="text-center text-3xl md:text-4xl font-bold mb-8 md:mb-12 tracking-wide text-white">
           FEATURED PRODUCTS
         </h2>
         <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {productImages.map((image, index) => (
-            <div key={index} className="aspect-square overflow-hidden rounded-lg shadow-md">
+            <div key={index} className="aspect-square overflow-hidden rounded-lg shadow-md bg-stone-800">
               <Image 
                 src={image} 
                 alt={`Featured product ${index + 1}`}
@@ -64,45 +63,45 @@ export default function Home() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-12 md:py-16 px-4 md:px-6">
+      <section id="about" className="py-12 md:py-16 px-4 md:px-6 bg-stone-800">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 tracking-wide">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6 tracking-wide text-white">
             ABOUT CAFE PRINCE
           </h2>
-          <p className="text-base md:text-lg text-gray-700 leading-relaxed mb-6">
+          <p className="text-base md:text-lg text-stone-300 leading-relaxed mb-6">
             At Cafe Prince, we believe in serving only the finest coffee, crafted with passion and expertise. 
             Our baristas are dedicated to creating the perfect cup every time, using premium beans sourced 
             from the best coffee regions around the world.
           </p>
-          <p className="text-base md:text-lg text-gray-700 leading-relaxed">
+          <p className="text-base md:text-lg text-stone-300 leading-relaxed">
             Whether you&#39;re looking for a quick espresso or a relaxing place to enjoy a latte, 
             Cafe Prince offers a welcoming atmosphere where coffee lovers can gather and savor 
             exceptional brews.
-          </p> {/* &#39; numeric character reference */ }
+          </p> {/* &#39; numeric character reference */}
         </div>
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-12 md:py-16 px-4 md:px-6 bg-gray-50">
+      <section id="contact" className="py-12 md:py-16 px-4 md:px-6 bg-stone-900">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-8 tracking-wide">
+          <h2 className="text-3xl md:text-4xl font-bold mb-8 tracking-wide text-white">
             VISIT US
           </h2>
-          <div className="space-y-4 text-base md:text-lg text-gray-700">
+          <div className="space-y-4 text-base md:text-lg text-stone-300">
             <p>
-              <span className="font-semibold">Address:</span><br />
+              <span className="font-semibold text-amber-400">Address:</span><br />
               Black 21 Lot 4 Italy St. EP Housing<br />
               Brgy Pinagsama Phase 2, Taguig, Philippines
             </p>
             <p>
-              <span className="font-semibold">Phone:</span><br />
+              <span className="font-semibold text-amber-400">Phone:</span><br />
               0915-895-6883
             </p>
             <p>
-              <span className="font-semibold">Email:</span><br />
+              <span className="font-semibold text-amber-400">Email:</span><br />
               cafeprince@gmail.com
             </p>
-            <p className="pt-4 text-sm text-gray-600">
+            <p className="pt-4 text-sm text-stone-400">
               Open Daily: 7:00 AM - 10:00 PM
             </p>
           </div>

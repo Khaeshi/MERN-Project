@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { login as loginUser } from '../../lib/auth'; // ✅ Import from lib/auth
+import { login as loginUser } from '../../lib/auth'; 
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -39,19 +39,19 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="w-full max-w-md bg-white rounded-lg shadow-md p-8">
-        <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Login</h2>
+    <div className="min-h-screen flex items-center justify-center bg-stone-900">
+      <div className="w-full max-w-md bg-stone-800 rounded-lg shadow-md p-8 border-stone-700">
+        <h2 className="text-2xl font-bold text-center text-white mb-6">Login</h2>
         
         {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+          <div className="bg-red-900/20 border border-red-700 text-red-300 px-4 py-3 rounded mb-4">
             {error}
           </div>
         )}
 
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="email" className="block text-sm font-medium text-stone-300 mb-2">
               Email Address
             </label>
             <input
@@ -59,13 +59,13 @@ export default function LoginPage() {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+              className="w-full px-3 py-2 border border-stone-600 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 bg-stone-700 text-white placeholder-stone-500"
               required
             />
           </div>
 
           <div className="mb-6">
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="password" className="block text-sm font-medium text-stone-300 mb-2">
               Password
             </label>
             <input
@@ -73,7 +73,7 @@ export default function LoginPage() {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+              className="w-full px-3 py-2 border border-stone-600 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 bg-stone-700 text-white placeholder-stone-500"
               required
             />
           </div>
@@ -81,21 +81,21 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+            className="w-full bg-amber-600 text-white py-2 px-4 rounded-md hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500 disabled:opacity-50"
           >
             {loading ? 'Logging in...' : 'Login'}
           </button>
         </form>
 
         <div className="mt-6 text-center">
-          <a href="/forgot-password" className="text-sm text-blue-600 hover:underline">
+          <a href="/forgot-password" className="text-sm text-amber-400 hover:underline">
             Forgot your password?
           </a>
         </div>
 
         <div className="mt-4 text-center">
-          <span className="text-sm text-gray-600">Don&#39;t have an account? </span>
-          <a href="/register" className="text-sm text-blue-600 hover:underline">
+          <span className="text-sm text-stone-400">Don&#39;t have an account? </span>
+          <a href="/register" className="text-sm text-amber-400 hover:underline">
             Register here
           </a>
         </div>

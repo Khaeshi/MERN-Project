@@ -1,16 +1,23 @@
-// routes/menu.js
 import express from 'express';
-import MenuItem from '../models/menuItem.js';  // Ensure this path is correct
-import { protect } from '../middleware/auth.js';  // Ensure this path is correct
+import mongoose from 'mongoose';
+import MenuItem from '../models/menuItem.js';  
+import { protect } from '../middleware/auth.js';  
 
-const router = express.Router();  // ✅ Declare the router
+const router = express.Router();  
 
 // GET /api/menu (fetch all menu items)
 router.get('/', async (req, res) => {
   try {
     console.log('📋 Fetching menu items...');
     const menuItems = await MenuItem.find();
-    res.json(menuItems);
+    const items = menuItems.map(item => ({
+      id: item._id.toString(),  
+      name: item.name,
+      price: item.price,
+      image: item.image,
+      description: item.description,
+    }));
+    res.json(items);
   } catch (error) {
     console.error('❌ Error fetching menu items:', error);
     res.status(500).json({ 
@@ -69,8 +76,17 @@ router.delete('/:id', protect, async (req, res) => {
   console.log('ID:', req.params.id);
 
   try {
-    const deletedItem = await MenuItem.findByIdAndDelete(req.params.id);
+    const { id } = req.params;
 
+    //  Validate that id is a valid ObjectId string
+    if (!id || !mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Invalid item ID' 
+      });
+    }
+
+    const deletedItem = await MenuItem.findByIdAndDelete(id);
     if (!deletedItem) {
       return res.status(404).json({ 
         success: false, 
