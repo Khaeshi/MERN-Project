@@ -1,11 +1,11 @@
-// server.js
 import express from 'express';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';  
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import connectDB from './config/database.js';
-import authRoutes from './routes/auth.js';
-import menuRoutes from './routes/menu.js';
+import apiRoutes from './routes/index.js';
+import { requestLogger, notFoundHandler, errorHandler } from './middleware/errorHandler.js';
 
 // Load environment variables
 dotenv.config();
@@ -17,20 +17,16 @@ const PORT = process.env.PORT || 5000;
 // Connect to MongoDB
 connectDB();
 
-// Middleware
-app.use(cors());
+// Configure CORS to allow credentials
+app.use(cors({
+  origin: process.env.CLIENT_URL || 'http://localhost:3000',  
+  credentials: true,  
+}));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// Request logger
-app.use((req, res, next) => {
-  console.log(`📨 ${req.method} ${req.path}`);
-  next();
-});
-
-// API Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/menu', menuRoutes);
+app.use(cookieParser());  
+app.use(requestLogger);
 
 // Root route
 app.get('/', (req, res) => {
@@ -43,30 +39,18 @@ app.get('/', (req, res) => {
     endpoints: {
       register: 'POST /api/auth/register',
       login: 'POST /api/auth/login',
+      logout: 'POST /api/auth/logout',
+      me: 'GET /api/auth/me',
       users: 'GET /api/auth/users'
     }
   });
 });
 
-// 404 handler
-app.use((req, res) => {
-  res.status(404).json({
-    success: false,
-    message: 'Route not found',
-    path: req.path
-  });
-});
+app.use('/api', apiRoutes);
 
-// Error handler
-app.use((err, req, res, next) => {
-  console.error('❌ Error:', err);
-  
-  res.status(err.status || 500).json({
-    success: false,
-    message: err.message || 'Server Error',
-    ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
-  });
-});
+// Error handling
+app.use(notFoundHandler);
+app.use(errorHandler);
 
 // Start server
 app.listen(PORT, () => {

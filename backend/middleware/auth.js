@@ -1,12 +1,13 @@
-// middleware/auth.js
 import jwt from 'jsonwebtoken';
 import User from '../models/user.js';
 
 export const protect = async (req, res, next) => {
   let token;
 
-  // Check for token in headers
-  if (
+  // ✅ UPDATED: Check for token in cookies first, then fallback to Authorization header
+  if (req.cookies && req.cookies.token) {
+    token = req.cookies.token;
+  } else if (
     req.headers.authorization &&
     req.headers.authorization.startsWith('Bearer')
   ) {

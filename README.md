@@ -117,7 +117,7 @@ MERN-Project/
 │    ├── AGENTS.md
 │    └── SETUP.md
 │    
-├── frontend/                    # React frontend
+├── frontend/                    # React frontend (Hybrid: Client, SSR, SSG)
 │   ├── .next                    # dist
 │   ├── node_modules
 │   ├── public                   
@@ -129,6 +129,8 @@ MERN-Project/
 │   │       ├── page.tsx         # Landing Page
 │   │       └── globals.css      # Global styles
 ├── .gitignore
+├── Dockerfile
+├── nginx.conf
 └── README.md
 
 ```

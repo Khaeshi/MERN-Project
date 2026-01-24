@@ -1,25 +1,36 @@
 'use client';
 
 import { useState } from 'react';
-import { useAuth } from '../../context/AuthContext';  // Import AuthContext
+import { useRouter } from 'next/navigation';
+import { login as loginUser } from '../../lib/auth'; // ✅ Import from lib/auth
 
-export default function Login() {
+export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();  // Use login from context
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setLoading(true);
-  
-    // ✅ Add logging to confirm strings are sent
-    console.log('Sending login request:', { email, password });  // Should show strings
-  
+
+    console.log('Sending login request:', { email, password });
+
     try {
-      await login(email, password);  // Uses AuthContext
+      // ✅ Use the login function from @/lib/auth
+      const data = await loginUser(email, password);
+      
+      console.log('✅ Login successful:', data.user);
+
+      // Redirect based on role (Header will auto-refresh when pathname changes)
+      if (data.user.role === 'admin') {
+        router.push('/admin/dashboard');
+      } else {
+        router.push('/shop');
+      }
+      router.refresh(); // Refresh server components to update auth state
     } catch (err) {
       setError((err as Error).message || 'Login failed');
     } finally {
@@ -48,7 +59,7 @@ export default function Login() {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
               required
             />
           </div>
@@ -62,7 +73,7 @@ export default function Login() {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
               required
             />
           </div>

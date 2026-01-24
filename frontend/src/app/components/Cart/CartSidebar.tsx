@@ -20,7 +20,7 @@ export function CartSidebar() {
 
       {/* Shopping Cart Modal (Floating) */}
       <div
-        className={`fixed top-1/2 right-4 transform -translate-y-1/2 w-full md:w-[400px] h-[80vh] bg-black rounded-lg shadow-2xl transition-transform duration-500 ease-in-out z-50 ${
+        className={`fixed top-1/2 right-0 transform -translate-y-1/2 w-full md:w-[400px] h-[80vh] bg-black rounded-lg shadow-2xl transition-transform duration-500 ease-in-out z-50 ${
           isCartOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >

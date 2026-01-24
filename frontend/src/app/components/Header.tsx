@@ -1,21 +1,59 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Menu, X } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
-import { useAuth } from '../context/AuthContext';
+import { getMe, logout as logoutUser, type User } from '../lib/auth';
 import Image from 'next/image';
 
 const navItems: string[] = ['Home', 'Shop', 'About', 'Contact'];
 
 export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const pathname = usePathname();  
   const router = useRouter();
-  const { user, logout } = useAuth();
 
-  const currentPage: string = pathname === '/shop' ? 'shop' : 'home';
+  // Determine current page including dashboard
+  const currentPage: string = 
+    pathname === '/shop' ? 'shop' : 
+    pathname.startsWith('/admin/dashboard') ? 'dashboard' : 
+    'home';
 
+  // ✅ Memoized fetch function to prevent recreation on every render
+  const fetchUser = useCallback(async () => {
+    try {
+      const userData = await getMe();
+      setUser(userData);
+    } catch (error) {
+      setUser(null);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  // ✅ Fetch user on mount
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
+
+  // ✅ Re-fetch when navigating to admin routes or after login redirect
+  useEffect(() => {
+    if (pathname.startsWith('/admin') || pathname.startsWith('/shop')) {
+      fetchUser();
+    }
+  }, [pathname, fetchUser]);
+
+  // ✅ Listen for custom event to refresh user (e.g., after login)
+  useEffect(() => {
+    const handleAuthChange = () => {
+      fetchUser();
+    };
+
+    window.addEventListener('auth-change', handleAuthChange);
+    return () => window.removeEventListener('auth-change', handleAuthChange);
+  }, [fetchUser]);
 
   const handleNavClick = (item: string): void => {
     if (item === 'Shop') {
@@ -32,6 +70,18 @@ export function Header() {
       }, 100);
     }
     setIsMobileMenuOpen(false);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logoutUser();
+      setUser(null);
+      setIsMobileMenuOpen(false);
+      router.push('/');
+      router.refresh();
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
   };
 
   return (
@@ -56,32 +106,40 @@ export function Header() {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-8">
-
           {/* Show Dashboard for Admins */}
           {user?.role === 'admin' && (  
             <button
               onClick={() => handleNavClick('Dashboard')}
-              className="text-white hover:text-gray-300 transition-colors tracking-wide"
+              className="relative text-white hover:text-gray-300 transition-colors tracking-wide group"
             >
               Dashboard
+              <span className={`absolute bottom-0 left-0 w-full h-0.5 bg-white transform origin-left transition-transform duration-300 ease-out ${
+                currentPage === 'dashboard' ? 'scale-x-100' : 'scale-x-0'
+              }`} />
             </button>
           )}
 
-          {navItems.map((item: string) => (
-            <button
-              key={item}
-              onClick={() => handleNavClick(item)}
-              className={`text-white hover:text-gray-300 transition-colors tracking-wide ${
-                (item === 'Shop' && currentPage === 'shop') ||
-                (item === 'Home' && currentPage === 'home') ? 'border-b-2 border-white' : ''
-              }`}
-            >
-              {item}
-            </button>
-          ))}
+          {navItems.map((item: string) => {
+            const isActive = 
+              (item === 'Shop' && currentPage === 'shop') ||
+              (item === 'Home' && currentPage === 'home');
+            
+            return (
+              <button
+                key={item}
+                onClick={() => handleNavClick(item)}
+                className="relative text-white hover:text-gray-300 transition-colors tracking-wide group"
+              >
+                {item}
+                <span className={`absolute bottom-0 left-0 w-full h-0.5 bg-white transform origin-left transition-transform duration-300 ease-out ${
+                  isActive ? 'scale-x-100' : 'scale-x-0'
+                }`} />
+              </button>
+            );
+          })}
 
           {/* Login Button for Non-Logged-In Users */}
-          {!user && (  
+          {!isLoading && !user && (  
             <button
               onClick={() => router.push('/Authentication/login')}
               className="text-white hover:text-gray-300 transition-colors tracking-wide"
@@ -91,9 +149,9 @@ export function Header() {
           )}
 
           {/* Logout Button for Logged-In Users */}
-          {user && (
+          {!isLoading && user && (
             <button
-              onClick={logout}
+              onClick={handleLogout}
               className="text-white hover:text-gray-300 transition-colors tracking-wide"
             >
               Logout
@@ -119,7 +177,9 @@ export function Header() {
             {user?.role === 'admin' && (  
               <button
                 onClick={() => handleNavClick('Dashboard')}
-                className="text-white hover:text-gray-300 transition-colors tracking-wide px-2 text-left"
+                className={`text-white hover:text-gray-300 transition-colors tracking-wide px-2 text-left ${
+                  currentPage === 'dashboard' ? 'font-bold' : ''
+                }`}
               >
                 Dashboard
               </button>
@@ -139,7 +199,7 @@ export function Header() {
             ))}
 
             {/* Login in Mobile for Non-Logged-In Users */}
-            {!user && (  
+            {!isLoading && !user && (  
               <button
                 onClick={() => { router.push('/Authentication/login'); setIsMobileMenuOpen(false); }}
                 className="text-white hover:text-gray-300 transition-colors tracking-wide px-2 text-left"
@@ -149,9 +209,9 @@ export function Header() {
             )}
 
             {/* Logout in Mobile for Logged-In Users */}
-            {user && (
+            {!isLoading && user && (
               <button
-                onClick={() => { logout(); setIsMobileMenuOpen(false); }}
+                onClick={handleLogout}
                 className="text-white hover:text-gray-300 transition-colors tracking-wide px-2 text-left"
               >
                 Logout
