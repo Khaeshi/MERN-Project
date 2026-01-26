@@ -30,7 +30,7 @@ export default function Home() {
             height={500}
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-stone-900/60"></div> {/* Adjusted overlay for warmth */}
+          <div className="absolute inset-0 bg-stone-900/60"></div> 
         </div>
         <div className="relative z-10 px-4">
           <h1 className="text-white text-4xl md:text-5xl lg:text-6xl font-bold mb-8 tracking-wide">

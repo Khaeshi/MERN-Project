@@ -9,8 +9,8 @@ import { Card, CardContent } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Badge } from '../components/ui/badge';
-import { CartSidebar } from '../components/Cart/CartSidebar';  
-import { CartModal } from '../components/Cart/CartModal';  
+import { CartSidebar } from '../components/features/Cart/CartSidebar';  
+import { CartModal } from '../components/features/Cart/CartModal';  
 
 interface ApiMenuItem {
   _id: string;

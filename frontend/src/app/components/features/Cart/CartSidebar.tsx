@@ -2,8 +2,8 @@
 
 import { X } from 'lucide-react';
 import Image from 'next/image';
-import { useCart } from '../../context/CartContext';
-import { Button } from '../../components/ui/button';  
+import { useCart } from '../../../context/CartContext';
+import { Button } from '../../ui/button';  
 
 export function CartSidebar() {
   const { cart, isCartOpen, updateQuantity, toggleCart, toggleModal, getTotalPrice } = useCart();

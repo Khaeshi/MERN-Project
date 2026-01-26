@@ -4,7 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import dynamic from 'next/dynamic';
 import { Footer } from '../app/components/Footer';
 import { CartProvider } from './context/CartContext';  
-import { CartSidebar } from "./components/Cart/CartSidebar";
+import { CartSidebar } from "./components/features/Cart/CartSidebar";
 import "./globals.css";
 
 const Header = dynamic(() => import('../app/components/Header').then(mod => mod.Header), { ssr: false });  
