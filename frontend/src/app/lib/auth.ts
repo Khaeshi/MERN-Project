@@ -19,24 +19,6 @@ export async function login(email: string, password: string) {
   return data;
 }
 
-export async function register(name: string, email: string, password: string, phone?: string) {
-  const response = await fetch(`${API_URL}/api/auth/register`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credentials: 'include',
-    body: JSON.stringify({ name, email, password, phone }),
-  });
-
-  const data = await response.json();
-
-  if (!data.success) {
-    throw new Error(data.message || 'Registration failed');
-  }
-
-  return data;
-}
 
 export async function logout() {
   const response = await fetch(`${API_URL}/api/auth/logout`, {

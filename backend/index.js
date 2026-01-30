@@ -48,7 +48,6 @@ app.get('/', (req, res) => {
     database: dbStatus,
     environment: process.env.NODE_ENV || 'development',
     endpoints: {
-      register: 'POST /api/auth/register',
       login: 'POST /api/auth/login',
       logout: 'POST /api/auth/logout',
       me: 'GET /api/auth/me',

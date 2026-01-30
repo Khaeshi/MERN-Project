@@ -24,64 +24,6 @@ const setTokenCookie = (res, token) => {
   console.log('🍪 Cookie set successfully');
 };
 
-/* 
-** ROUTES   
-** @route   POST /api/auth/register
-*/
-router.post('/register', async (req, res) => {
-  const { name, email, password, phone } = req.body;
-
-  if (!name || !email || !password) {
-    return res.status(400).json({ 
-      success: false,
-      message: 'Name, email, and password are required' 
-    });
-  }
-
-  try {
-    const existingUser = await User.findOne({ email });
-    
-    if (existingUser) {
-      return res.status(400).json({ 
-        success: false,
-        message: 'User already exists with this email' 
-      });
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 12);
-    const user = new User({ 
-      name, 
-      email, 
-      password: hashedPassword, 
-      phone,
-      authProvider: 'local' 
-    });
-    await user.save();
-
-    const token = generateToken(user._id);
-    setTokenCookie(res, token);
-
-    res.status(201).json({ 
-      success: true,
-      message: 'User registered successfully',
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        authProvider: user.authProvider,
-        createdAt: user.createdAt
-      }
-    });
-
-  } catch (err) {
-    console.error('❌ Registration error:', err);
-    res.status(500).json({ 
-      success: false,
-      message: 'Server error during registration'
-    });
-  }
-});
 
 /*   
 ** @route   POST /api/auth/login
