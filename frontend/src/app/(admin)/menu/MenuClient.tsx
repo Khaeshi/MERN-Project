@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import useSWR from 'swr';
 import { API_ENDPOINTS } from '../../lib/api';
 import { 
@@ -22,6 +21,7 @@ import { Input } from '../../components/ui/input';
 import { Label } from '../../components/ui/label';
 import { Textarea } from '../../components/ui/textarea';
 import Image from 'next/image';
+import ImageGallery from '../../components/admin/ImageGallery';
 
 interface MenuItem { 
   _id: string;
@@ -46,13 +46,14 @@ const fetcher = (url: string) => {
 };
 
 export default function MenuClient() {
-  const router = useRouter();
   const [newItem, setNewItem] = useState({ name: '', price: 0, image: '', description: '' });
   const [editingItem, setEditingItem] = useState<MenuItem | null>(null);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showImageGallery, setShowImageGallery] = useState(false);
+  const [imageGalleryMode, setImageGalleryMode] = useState<'add' | 'edit'>('add');
 
   // Fetch menu items
   const { data: menuItems, error, mutate } = useSWR<MenuItem[]>(
@@ -236,7 +237,7 @@ export default function MenuClient() {
               className="overflow-hidden hover:shadow-xl transition-all duration-300 bg-stone-800 border-stone-700 hover:border-amber-600/50"
             >
               <div className="aspect-video w-full bg-stone-700 relative overflow-hidden group">
-                {item.image && item.image.trim() !== '' && item.image.startsWith('/products/') ? (
+                {item.image && item.image.trim() !== '' ? (
                   <Image
                     src={item.image}
                     alt={item.name}
@@ -348,16 +349,40 @@ export default function MenuClient() {
               <div className="space-y-2">
                 <Label htmlFor="modal-image" className="flex items-center gap-2 text-stone-300">
                   <ImageIcon className="w-4 h-4" />
-                  Image URL
+                  Image
                 </Label>
-                <Input
-                  id="modal-image"
-                  placeholder="/products/coffee.jpg"
-                  value={newItem.image}
-                  onChange={(e) => setNewItem({ ...newItem, image: e.target.value })}
-                  className="bg-stone-700 border-stone-600 text-white placeholder-stone-500 focus:border-amber-600"
-                />
-                <p className="text-xs text-stone-500">Must start with /products/</p>
+                <div className="flex gap-2">
+                  <Input
+                    id="modal-image"
+                    placeholder="Image URL from S3"
+                    value={newItem.image}
+                    onChange={(e) => setNewItem({ ...newItem, image: e.target.value })}
+                    className="flex-1 bg-stone-700 border-stone-600 text-white placeholder-stone-500 focus:border-amber-600"
+                    readOnly
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => {
+                      setImageGalleryMode('add');
+                      setShowImageGallery(true);
+                    }}
+                    className="bg-amber-600 hover:bg-amber-700 text-white border-amber-600"
+                  >
+                    <ImageIcon className="w-4 h-4 mr-2" />
+                    Browse
+                  </Button>
+                </div>
+                {newItem.image && (
+                  <div className="mt-2 relative w-full h-32 rounded-lg overflow-hidden bg-stone-700">
+                    <Image
+                      src={newItem.image}
+                      alt="Preview"
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                )}
               </div>
 
               <div className="space-y-2">
@@ -468,13 +493,39 @@ export default function MenuClient() {
               <div className="space-y-2">
                 <Label className="flex items-center gap-2 text-stone-300">
                   <ImageIcon className="w-4 h-4" />
-                  Image URL
+                  Image
                 </Label>
-                <Input
-                  value={editingItem.image}
-                  onChange={(e) => setEditingItem({ ...editingItem, image: e.target.value })}
-                  className="bg-stone-700 border-stone-600 text-white placeholder-stone-500 focus:border-amber-600"
-                />
+                <div className="flex gap-2">
+                  <Input
+                    value={editingItem.image}
+                    onChange={(e) => setEditingItem({ ...editingItem, image: e.target.value })}
+                    className="flex-1 bg-stone-700 border-stone-600 text-white placeholder-stone-500 focus:border-amber-600"
+                    placeholder="Image URL from S3"
+                    readOnly
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => {
+                      setImageGalleryMode('edit');
+                      setShowImageGallery(true);
+                    }}
+                    className="bg-amber-600 hover:bg-amber-700 text-white border-amber-600"
+                  >
+                    <ImageIcon className="w-4 h-4 mr-2" />
+                    Browse
+                  </Button>
+                </div>
+                {editingItem.image && (
+                  <div className="mt-2 relative w-full h-32 rounded-lg overflow-hidden bg-stone-700">
+                    <Image
+                      src={editingItem.image}
+                      alt="Preview"
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                )}
               </div>
 
               <div className="space-y-2">
@@ -523,6 +574,21 @@ export default function MenuClient() {
             </CardContent>
           </Card>
         </div>
+      )}
+
+      {/* Image Gallery Modal - Placed outside other modals */}
+      {showImageGallery && (
+        <ImageGallery
+          onSelectImage={(url) => {
+            if (imageGalleryMode === 'add') {
+              setNewItem({ ...newItem, image: url });
+            } else if (editingItem) {
+              setEditingItem({ ...editingItem, image: url });
+            }
+          }}
+          selectedImage={imageGalleryMode === 'add' ? newItem.image : editingItem?.image}
+          onClose={() => setShowImageGallery(false)}
+        />
       )}
     </div>
   );

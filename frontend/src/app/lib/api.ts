@@ -18,12 +18,16 @@ export const API_ENDPOINTS = {
   
   // Menu endpoints
   menu: `${API_BASE}/menu`,
+  uploadImage: `${API_BASE}/upload/image`,
+  listImages: `${API_BASE}/upload/images`,
+  deleteImage: `${API_BASE}/upload/image`,
   
   // Auth endpoints
   authMe: `${API_BASE}/auth/me`,
   authGoogle: `${API_BASE}/auth/google`,
 
-  users: `${API_BASE}/admin/users`, 
+  // Usesrs endpoints
+  users: `${API_BASE}/admin/users`,  
 };
 
 /**

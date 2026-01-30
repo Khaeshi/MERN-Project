@@ -59,11 +59,15 @@ export default function UsersClient() {
     fetcher
   );
 
-  // Filter users based on search and role
   const filteredUsers = users?.filter(user => {
     const matchesSearch = user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         user.email.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesRole = filterRole === 'all' || user.role === filterRole;
+                          user.email.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    // Treat 'user' and 'customer' as the same category
+    const matchesRole = filterRole === 'all' || 
+                        user.role === filterRole || 
+                        (filterRole === 'customer' && user.role === 'user');
+    
     return matchesSearch && matchesRole;
   });
 
