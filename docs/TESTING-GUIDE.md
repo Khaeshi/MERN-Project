@@ -38,9 +38,26 @@ Scripts:
     "test:coverage": "jest --coverage",
     "test:backend": "jest --testPathPattern=backend"
 ```
+---
 
+### Recommended Workflow
 
+1. Use Git Branches (Safest Approach)
 
+Setup:
+```bash
+main (production)
+  └── develop (staging)
+      └── feature/backend-testing (tester branch)
+```
+
+Process:
+
+Tester(You) creates branch: git checkout -b feature/backend-testing
+They write tests and push to their branch
+They create Pull Request (PR) to develop
+I review the PR before merging
+---
 
 
 ### 1. Unit Testing Controllers
