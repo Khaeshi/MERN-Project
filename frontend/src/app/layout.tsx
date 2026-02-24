@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Playfair_Display, Inter } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next"
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import "./globals.css";
@@ -31,6 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${playfair.variable} ${inter.variable} antialiased`}>
+      <Analytics/>
         <AuthProvider>
             <CartProvider>
               {children}
