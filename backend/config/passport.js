@@ -12,7 +12,8 @@ console.log('Google Client Secret:', process.env.GOOGLECLIENTSECRET ? 'SET' : 'N
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLECLIENTID,
     clientSecret: process.env.GOOGLECLIENTSECRET,
-    callbackURL: '/api/auth/google/callback',
+    callbackURL: process.env.GOOGLE_CALLBACK_URL,
+    proxy: true,
     accessType: 'offline',  
     prompt: 'select_account consent'       
   },
