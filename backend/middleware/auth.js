@@ -32,10 +32,10 @@ export const protect = async (req, res, next) => {
     
     // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log('✅ Token verified for userId:', decoded.userId);
+    console.log('✅ Token verified for id:', decoded.id);
 
     // Get user from token
-    req.user = await User.findById(decoded.userId).select('-password');
+    req.user = await User.findById(decoded.id).select('-password');
 
     if (!req.user) {
       console.log('❌ User not found for userId:', decoded.userId);
