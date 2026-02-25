@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/user.js'; 
 import { protect, admin } from '../middleware/auth.js';
+import generateToken from '../utils/generateToken.js'
 
 const router = express.Router();
 
@@ -62,15 +63,7 @@ router.post('/auth/login', async (req, res) => {
 
     console.log('✅ Password valid, generating token...');
 
-    const token = jwt.sign(
-      { 
-        userId: user._id, 
-        role: user.role,
-        email: user.email 
-      },
-      process.env.JWT_SECRET,
-      { expiresIn: '24h' }
-    );
+    const token = generateToken(user._id, user.role);
 
     console.log('✅ Login successful for:', user.email);
 

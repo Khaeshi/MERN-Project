@@ -38,7 +38,7 @@ export const protect = async (req, res, next) => {
     req.user = await User.findById(decoded.id).select('-password');
 
     if (!req.user) {
-      console.log('❌ User not found for userId:', decoded.userId);
+      console.log('❌ User not found for userId:', decoded.Id);
       return res.status(401).json({
         success: false,
         message: 'User not found'
