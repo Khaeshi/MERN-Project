@@ -212,7 +212,7 @@ router.get('/google/callback',
       console.log('🍪 Setting cookie...');
       setTokenCookie(res, token);
       
-      const redirectUrl = `${process.env.CLIENT_URL}/success?token=${token}`;
+      const redirectUrl = `${process.env.CLIENT_URL}/success`;
       console.log('🚀 About to redirect to:', redirectUrl);
       console.log('CLIENT_URL env var:', process.env.CLIENT_URL);
       

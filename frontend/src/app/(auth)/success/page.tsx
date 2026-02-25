@@ -10,25 +10,11 @@ export default function AuthSuccessPage() {
 
   useEffect(() => {
     const handleAuth = async () => {
-      const params = new URLSearchParams(window.location.search);
-      const token = params.get('token');
-      
-      if (token) {
-        await fetch(`${API_URL}/api/auth/set-cookie`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',
-          body: JSON.stringify({ token }),
-        });
-
-        await checkAuth();
-      }
-
+      await checkAuth();
       const redirectTo = localStorage.getItem('redirectAfterLogin') || '/';
       localStorage.removeItem('redirectAfterLogin');
       window.location.href = redirectTo;
     };
-
     handleAuth();
   }, []);
 
