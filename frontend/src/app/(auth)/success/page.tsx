@@ -1,21 +1,26 @@
 'use client'
 
 import { useEffect } from 'react';
+import { useAuth } from '../../context/AuthContext'
 
 export default function AuthSuccessPage() {
+  const {checkAuth} = useAuth();
+
   useEffect(() => {
     console.log('✅ Auth success page loaded');
-    
-    // Redirect after showing success message
-    const timer = setTimeout(() => {
+
+
+    const handleAuth = async () => {
+      await checkAuth();
+
       const redirectTo = localStorage.getItem('redirectAfterLogin') || '/';
       localStorage.removeItem('redirectAfterLogin');
       console.log('🚀 Redirecting to:', redirectTo);
       window.location.href = redirectTo;
-    }, 1500);
+    };
 
-    return () => clearTimeout(timer);
-  }, []); // Empty deps - runs once on mount
+    handleAuth();
+  }, []); 
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-stone-900">
