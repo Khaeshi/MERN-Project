@@ -28,6 +28,16 @@ const setTokenCookie = (res, token) => {
  * @route POST /set-cookie
  * this is configured to allow cross-origin through cookie with direct fetch along with credentials
  */
+router.post('/set-cookie', (req, res) => {
+  const { token } = req.body;
+  
+  if (!token) {
+    return res.status(400).json({ success: false, message: 'No token provided' });
+  }
+  
+  setTokenCookie(res, token);
+  res.json({ success: true });
+});
 
 /**
  * @route POST /api/auth/login
