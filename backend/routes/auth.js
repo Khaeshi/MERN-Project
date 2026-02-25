@@ -24,10 +24,14 @@ const setTokenCookie = (res, token) => {
   console.log('🍪 Cookie set successfully');
 };
 
+/**
+ * @route POST /set-cookie
+ * this is configured to allow cross-origin through cookie with direct fetch along with credentials
+ */
 
-/*   
-** @route   POST /api/auth/login
-*/
+/**
+ * @route POST /api/auth/login
+ */
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
@@ -208,7 +212,7 @@ router.get('/google/callback',
       console.log('🍪 Setting cookie...');
       setTokenCookie(res, token);
       
-      const redirectUrl = `${process.env.CLIENT_URL}/success`;
+      const redirectUrl = `${process.env.CLIENT_URL}/success?token=${token}`;
       console.log('🚀 About to redirect to:', redirectUrl);
       console.log('CLIENT_URL env var:', process.env.CLIENT_URL);
       
