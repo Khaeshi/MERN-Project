@@ -39,7 +39,10 @@ app.use(helmet({
       styleSrc: ["'self'", "'unsafe-inline'"],
       imgSrc: ["'self'", 'data:', 'https://cafe-prince-menu-images.s3.amazonaws.com'],
       fontSrc: ["'self'", 'data:'],
-      connectSrc: ["'self'", 'https://cafe-prince-menu-images.s3.amazonaws.com'],
+      connectSrc: ["'self'", 
+        'https://cafe-prince-menu-images.s3.amazonaws.com',
+        'https://cafe-backend-fx7c.onrender.com'
+      ],
     },
   },
   xFrameOptions: {action: 'deny'},
@@ -51,10 +54,9 @@ app.use(helmet({
   noCache: true,
   noSniff: true,
   permittedCrossDomainPolicies: {create: false},
-  crossOriginOpenerPolicy: {action: 'deny'},
-  crossOriginEmbedderPolicy: {action: 'deny'},
-  crossOriginResourcePolicy: {action: 'deny'},
-  crossOriginResourcePolicy: {action: 'deny'},
+  crossOriginOpenerPolicy: {policy: 'same-origin-allow-popups'},
+  crossOriginEmbedderPolicy: false,
+  crossOriginResourcePolicy: {policy: 'cross-origin'},
 }));
 
 app.use(cors({
