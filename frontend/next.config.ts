@@ -29,7 +29,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/api/:path*',
-        destination: 'http://localhost:5000/api/:path*', // Proxy to backend
+        destination: 'https://cafe-backend-fx7c.onrender.com/api/:path*', // Proxy to backend
       },
     ];
   }
