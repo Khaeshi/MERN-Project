@@ -7,19 +7,26 @@ const navItems = [
   { name: 'Dashboard', href: '/dashboard', icon: '📊' },
   { name: 'Menu', href: '/menu', icon: '🍽️' },
   { name: 'Orders', href: '/orders', icon: '📦' },
-  { name: 'Users', href: '/users', icon: '👥' },
+  { name: 'Users', href: '/users', icon: '👥', adminOnly: true },
 ];
 
-export default function AdminSidebar() {
+interface AdminSidebarProps {
+  role?: string;
+}
+
+export default function AdminSidebar({ role }: AdminSidebarProps) {
   const pathname = usePathname();
+
+  const visibleNavItems = navItems.filter(item =>
+    !item.adminOnly || role === 'admin'
+  );
 
   return (
     <aside className="w-64 bg-white shadow-md min-h-[calc(100vh-73px)]">
       <nav className="p-4">
         <ul className="space-y-2">
-          {navItems.map((item) => {
+          {visibleNavItems.map((item) => {
             const isActive = pathname === item.href;
-            
             return (
               <li key={item.href}>
                 <Link

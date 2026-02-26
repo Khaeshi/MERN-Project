@@ -133,18 +133,27 @@ export default function MenuClient() {
   // Delete item
   const deleteItem = async (id: string) => {
     if (!confirm('Are you sure you want to delete this menu item?')) return;
-
+  
     const token = localStorage.getItem('adminToken');
     try {
       const res = await fetch(`${API_ENDPOINTS.menu}/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` },
       });
-      
-      if (!res.ok) throw new Error('Failed to delete item');
+  
+      // ✅ Always try to get the text first, then parse
+      const text = await res.text();
+      const data = text ? JSON.parse(text) : {};
+  
+      if (!res.ok) {
+        alert(`Error ${res.status}: ${data.message || 'Failed to delete item'}`);
+        return;
+      }
+  
       mutate();
     } catch (error) {
-      alert('Failed to delete item. Please contact admin.');
+      console.error('Delete error:', error);
+      alert(`Error: ${(error as Error).message}`);
     }
   };
 

@@ -7,7 +7,7 @@ interface AdminUser {
   id: string;
   email: string;
   name: string;
-  role: 'admin';
+  role: 'staff' | 'admin';
 }
 
 interface AdminAuthContextType {

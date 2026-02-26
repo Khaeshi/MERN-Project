@@ -4,7 +4,7 @@
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
 
 /**
- * Always add /api prefix for all API calls
+ *  /api prefix for all API calls
  */ 
 export const API_BASE = `${BACKEND_URL}/api`;
 /**

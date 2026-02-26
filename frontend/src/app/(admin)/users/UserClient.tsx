@@ -42,6 +42,7 @@ const fetcher = (url: string) => {
       'Content-Type': 'application/json',
     },
   }).then(res => {
+    if (res.status === 403) throw new Error('forbidden access');
     if (!res.ok) throw new Error('Fetch failed');
     return res.json();
   });
