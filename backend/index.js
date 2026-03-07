@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 dotenv.config({ path: '.env' });
 
+
 import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
@@ -129,3 +130,6 @@ process.on('unhandledRejection', (err) => {
 });
 
 export default app;
+
+console.log('GOOGLE_CLIENT_ID=', process.env.GOOGLE_CLIENT_ID);
+console.log('GOOGLE_CLIENT_SECRET=', process.env.GOOGLE_CLIENT_SECRET);

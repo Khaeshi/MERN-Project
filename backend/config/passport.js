@@ -6,12 +6,12 @@ import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import User from '../models/user.js';
 
 console.log('🔧 Passport configuration loading...');
-console.log('Google Client ID:', process.env.GOOGLECLIENTID ? 'SET' : 'NOT SET');
-console.log('Google Client Secret:', process.env.GOOGLECLIENTSECRET ? 'SET' : 'NOT SET');
+console.log('Google Client ID:', process.env.GOOGLE_CLIENT_ID ? 'SET' : 'NOT SET');
+console.log('Google Client Secret:', process.env.GOOGLE_CLIENT_SECRET ? 'SET' : 'NOT SET');
 
 passport.use(new GoogleStrategy({
-    clientID: process.env.GOOGLECLIENTID,
-    clientSecret: process.env.GOOGLECLIENTSECRET,
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackURL: '/api/auth/google/callback',
     accessType: 'offline',  
     prompt: 'select_account consent'       

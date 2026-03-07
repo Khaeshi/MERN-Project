@@ -31,6 +31,13 @@ const setTokenCookie = (res, token) => {
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
+  if (typeof email !== 'string' || typeof password !== 'string') {
+    return res.status(400).json({
+      success: false,
+      message: 'Invalid input type'
+    });
+  }
+
   if (!email || !password) {
     return res.status(400).json({ 
       success: false,

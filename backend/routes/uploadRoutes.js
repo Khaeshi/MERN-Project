@@ -2,7 +2,21 @@ import express from 'express';
 const router = express.Router();
 import { upload, s3 } from '../config/s3Config.js';
 import { protect, admin } from '../middleware/auth.js';
-import { ListObjectsV2Command, DeleteObjectCommand } from '@aws-sdk/client-s3';
+import { ListObjectsV2Command, DeleteObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3'; // <-- Added GetObjectCommand
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner'; // <-- Added for signed URL generation
+
+/**
+ * Helper function to generate a signed URL for a given S3 key
+ */
+const getSignedImageUrl = async (key) => { // <-- Added
+  const command = new GetObjectCommand({
+    Bucket: process.env.AWS_BUCKET_NAME,
+    Key: key
+  });
+
+  const url = await getSignedUrl(s3, command, { expiresIn: 3600 }); // 1 hour expiry
+  return url;
+};
 
 /**
  * Get all images from S3
@@ -15,13 +29,26 @@ router.get('/images', protect, admin, async (req, res) => {
     });
 
     const data = await s3.send(command);
+    const contents = data.Contents || [];
     
-    const images = (data.Contents || []).map(item => ({
-      key: item.Key,
-      url: `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${item.Key}`,
-      lastModified: item.LastModified,
-      size: item.Size
-    })).filter(img => img.key !== 'menu-images/'); 
+    // const images = (data.Contents || []).map(item => ({
+    //   key: item.Key,
+    //   url: `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${item.Key}`,
+    //   lastModified: item.LastModified,
+    //   size: item.Size
+    // })).filter(img => img.key !== 'menu-images/'); 
+
+    // Map images to include signed URLs
+    const images = await Promise.all(
+      contents
+        .filter(item => item.Key !== 'menu-images/') // skip folder key
+        .map(async (item) => ({
+          key: item.Key,
+          url: await getSignedImageUrl(item.Key), // <-- Signed URL
+          lastModified: item.LastModified,
+          size: item.Size
+        }))
+    );
 
     res.json({ images });
   } catch (error) {
