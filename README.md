@@ -230,9 +230,9 @@ backend/
 | Name | Role | GitHub | Email |
 |------|------|--------|-------|
 | Khaesey Angel G. Tablante | Project Lead Developer & Backend | [@Khaeshi](https://github.com/Khaeshi) | kagtabss@gmail.com |
-| Christenne Jsele Herrera | Project UI/UX Designer & Documentation | [@jsele]() | lr.cjherrera@mmdc.mcl.edu.ph |
+| Christenne Jsele Herrera | Project UI/UX Designer & Documentation | [@tenherrera]() | christenneherrera@gmail.com |
 | Shirly Rose Montes | Projet API Specialist & QA Tester | [@shirleymontes](https://github.com/shirlymontes) | lr.srmontes@mmdc.mcl.edu.ph |
-| Reinard Ezekiel Rivera |  | []() | lr.rerivera@mmdc.mcl.edu.ph  |
+| Reinard Ezekiel Rivera |  | [@hubRRDizon]() | lr.rerivera@mmdc.mcl.edu.ph  |
 
 ## 🙏 Acknowledgments
 
