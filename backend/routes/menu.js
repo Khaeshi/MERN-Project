@@ -10,7 +10,7 @@ const router = express.Router();
  * GET /api/menu
  * Fetch all menu items
  */
-router.get('/', protect, requireRole(...Permission.VIEW_MENU), async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     console.log('📋 Fetching menu items...');
     const menuItems = await MenuItem.find();
