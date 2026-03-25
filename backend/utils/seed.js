@@ -16,17 +16,17 @@ const users = [
     phone: '1234567890'
   },
   {
-    name: 'John Doe',
-    email: 'john@example.com',
+    name: 'Mentor Pison',
+    email: 'adminPison@gmail.com',
     password: 'password123',
-    role: 'user',
+    role: 'admin',
     phone: '0987654321'
   },
   {
     name: 'Jane Smith',
     email: 'jane@example.com',
     password: 'password123',
-    role: 'user',
+    role: 'admin',
     phone: '5555555555'
   },
   {

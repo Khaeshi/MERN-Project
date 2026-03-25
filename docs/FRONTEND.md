@@ -21,5 +21,10 @@ To access admin route:
 ```bash
 localhost:3000/login
 ```
+or
+
+```bash
+localhost:3000/dashboard
+```
 
 Enter correct credentials to access admin dashboard.

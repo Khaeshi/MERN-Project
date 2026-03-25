@@ -38,6 +38,7 @@ frontend/out/
 # React build output
 frontend/build
 backend/dist
+backend/utils
 # Build folders
 client/build/
 server/logs/
